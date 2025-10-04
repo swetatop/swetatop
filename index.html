@@ -14,25 +14,51 @@
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            color: white;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+        }
+
+        /* Видео фон */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .profile {
-            background: white;
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
             margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .profile-img {
@@ -49,7 +75,7 @@
             margin: 30px 0;
             font-size: 1.1em;
             line-height: 1.8;
-            color: #666;
+            color: white;
         }
 
         .pricing-cards {
@@ -60,44 +86,39 @@
         }
 
         .pricing-card {
-            background: white;
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
             text-align: center;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
         }
 
         .pricing-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
             border-color: #667eea;
+            background: rgba(0, 0, 0, 0.9);
         }
 
         .social-icon {
             width: 24px;
             height: 24px;
             margin-right: 10px;
-            filter: grayscale(100%) brightness(0%);
+            filter: grayscale(100%) brightness(100%);
         }
 
         .social-title {
             font-size: 1.5em;
             font-weight: bold;
-            margin-bottom: 15px;
-            color: #333;
+            margin-bottom: 25px;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-        }
-
-        .social-description {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-            line-height: 1.5;
         }
 
         .social-link {
@@ -114,7 +135,7 @@
         }
 
         .social-link:hover {
-            background: white;
+            background: transparent;
             color: #667eea;
             transform: translateY(-2px);
         }
@@ -137,34 +158,22 @@
     </style>
 </head>
 <body>
+    <!-- Видео фон -->
+    <video class="video-background" autoplay muted loop>
+        <source src="https://assets.codepen.io/3364143/7btrrd.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+    <div class="overlay"></div>
+
     <div class="container">
         <div class="profile">
-            <img src="https://via.placeholder.com/150" alt="Мое фото" class="profile-img">
+            <img src="https://via.placeholder.com/150" alt="" class="profile-img">
             <div class="bio">
-                <p>Holy shiiiiii</p>
+                <p>Holy shiiilli</p>
             </div>
         </div>
 
         <div class="pricing-cards">
-            <!-- Pinterest Card -->
-            <div class="pricing-card">
-                <div class="social-title">
-                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.042-3.441.219-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
-                    </svg>
-                    Pinterest
-                </div>
-                <div class="social-description">
-                    Посмотрите мои коллекции и вдохновляющие находки
-                </div>
-                <a href="https://www.pinterest.com/pin/654077545880501973" class="social-link" target="_blank">
-                    Перейти
-                    <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                    </svg>
-                </a>
-            </div>
-
             <!-- Telegram Card -->
             <div class="pricing-card">
                 <div class="social-title">
@@ -172,9 +181,6 @@
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.51-.45-.86-.69-.84-1.09.02-.35.43-.54.84-.78 3.47-1.53 5.79-2.54 8.14-3.78.39-.2.75-.12.61.23-.78 2.07-2.38 6.34-3.17 8.34z"/>
                     </svg>
                     Telegram
-                </div>
-                <div class="social-description">
-                    Напишите мне в Telegram для быстрой связи
                 </div>
                 <a href="https://t.me/swetatopp" class="social-link" target="_blank">
                     Написать
@@ -192,9 +198,6 @@
                     </svg>
                     Instagram
                 </div>
-                <div class="social-description">
-                    Подпишитесь на мой Instagram для новых фото
-                </div>
                 <a href="https://www.instagram.com/swetalub" class="social-link" target="_blank">
                     Подписаться
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -211,9 +214,6 @@
                     </svg>
                     TikTok
                 </div>
-                <div class="social-description">
-                    Смотрите мои видео в TikTok
-                </div>
                 <a href="https://www.tiktok.com/@swetatop28" class="social-link" target="_blank">
                     Смотреть
                     <svg class="button-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -229,9 +229,6 @@
                         <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12s-5.373-12-12-12zm5.533 8.143c0-1.396-1.14-2.537-2.537-2.537s-2.537 1.141-2.537 2.537 1.14 2.537 2.537 2.537 2.537-1.141 2.537-2.537zm-8.143 7.724c0-1.396-1.14-2.537-2.537-2.537s-2.537 1.141-2.537 2.537 1.14 2.537 2.537 2.537 2.537-1.141 2.537-2.537z"/>
                     </svg>
                     Steam
-                </div>
-                <div class="social-description">
-                    Добавьте меня в друзья в Steam
                 </div>
                 <a href="https://steamcommunity.com/id/swetatop" class="social-link" target="_blank">
                     Добавить
