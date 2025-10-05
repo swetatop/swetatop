@@ -3,173 +3,607 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Links</title>
+    <title>My Links</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
-            position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Видео фон */
-        .video-background {
+        /* Video/GIF background */
+        #backgroundVideo {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -2;
+            z-index: -1;
         }
 
-        /* Затемнение фона */
-        .overlay {
+        .background-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
             z-index: -1;
         }
 
-        .social-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
+        .container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Avatar */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .avatar:hover .avatar-upload {
+            opacity: 1;
+        }
+
+        /* Admin panel */
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .admin-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .admin-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .admin-btn:hover {
+            background: #5a6fd8;
+        }
+
+        /* Links */
+        .links {
             width: 100%;
         }
 
-        .social-card {
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 15px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            text-align: center;
+        .link-item {
+            background: rgba(255, 255, 255, 0.7);
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
             transition: all 0.3s ease;
-            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
         }
 
-        .social-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.9);
-            border-color: #667eea;
-            background: rgba(0, 0, 0, 0.95);
+        .link-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.9);
         }
 
-        .social-icon {
+        .link-icon {
             width: 40px;
             height: 40px;
-            margin-bottom: 20px;
-            filter: grayscale(100%) brightness(100%);
-        }
-
-        .social-title {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 25px;
-            color: white;
-        }
-
-        .social-link {
-            display: inline-flex;
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
             align-items: center;
-            padding: 15px 35px;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+        }
+
+        .link-content {
+            text-align: left;
+            flex: 1;
+        }
+
+        .link-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .link-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Platform colors */
+        .telegram { background: #0088cc; }
+        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .tiktok { background: #000000; }
+        .steam { background: #000000; }
+        .discord { background: #5865f2; }
+
+        /* Audio player */
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .play-btn {
             background: #667eea;
             color: white;
-            text-decoration: none;
-            border-radius: 30px;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Settings */
+        .settings {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Settings modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            border: 2px solid #667eea;
         }
 
-        .social-link:hover {
-            background: transparent;
-            color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
-        @media (max-width: 768px) {
-            .social-cards {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .social-card {
-                padding: 30px 20px;
-            }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Password protection */
+        .password-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .password-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            width: 200px;
         }
     </style>
 </head>
 <body>
-    <!-- Видео фон -->
-    <video class="video-background" autoplay muted loop>
-        <source src="video/Back02.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+    <!-- Background (video/gif) -->
+    <video id="backgroundVideo" autoplay muted loop>
+        <!-- Video source will be set through settings -->
     </video>
-    <div class="overlay"></div>
+    <div class="background-overlay"></div>
 
-    <div class="social-cards">
-        <!-- Telegram Card -->
-        <div class="social-card">
-            <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.51-.45-.86-.69-.84-1.09.02-.35.43-.54.84-.78 3.47-1.53 5.79-2.54 8.14-3.78.39-.2.75-.12.61.23-.78 2.07-2.38 6.34-3.17 8.34z"/>
-            </svg>
-            <div class="social-title">Telegram</div>
-            <a href="https://t.me/swetatopp" class="social-link" target="_blank">
-                Message
-            </a>
+    <!-- Settings button -->
+    <div class="settings" onclick="openSettings()">⚙️ Settings</div>
+
+    <div class="container">
+        <!-- Admin Panel (visible only to admin) -->
+        <div id="adminPanel" class="admin-panel" style="display: none;">
+            <div class="admin-title">👑 Admin Panel</div>
+            <button class="admin-btn" onclick="showAvatarUpload()">Change Avatar for Everyone</button>
+            <button class="admin-btn" onclick="resetToDefaultAvatar()">Reset to Default Avatar</button>
         </div>
 
-        <!-- Instagram Card -->
-        <div class="social-card">
-            <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153a4.908 4.908 0 0 1 1.153 1.772c.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772 4.915 4.915 0 0 1-1.772 1.153c-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 0 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
-            </svg>
-            <div class="social-title">Instagram</div>
-            <a href="https://www.instagram.com/swetalub" class="social-link" target="_blank">
-                Follow
-            </a>
+        <!-- Password protection -->
+        <div id="passwordPanel" class="password-panel">
+            <div class="admin-title">Admin Access</div>
+            <input type="password" id="adminPassword" class="password-input" placeholder="Enter admin password">
+            <button class="admin-btn" onclick="checkAdminPassword()">Access</button>
         </div>
 
-        <!-- TikTok Card -->
-        <div class="social-card">
-            <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-            </svg>
-            <div class="social-title">TikTok</div>
-            <a href="https://www.tiktok.com/@swetatop28" class="social-link" target="_blank">
-                Watch
-            </a>
+        <!-- Avatar -->
+        <div class="avatar" onclick="showAdminAccess()">
+            <img id="avatarImg" src="https://via.placeholder.com/120/667eea/ffffff?text=AVATAR" alt="Avatar">
+            <div class="avatar-upload">Admin: Change Avatar</div>
         </div>
 
-        <!-- Steam Card -->
-        <div class="social-card">
-            <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 12-5.373 12-12s-5.373-12-12-12zm5.533 8.143c0-1.396-1.14-2.537-2.537-2.537s-2.537 1.141-2.537 2.537 1.14 2.537 2.537 2.537 2.537-1.141 2.537-2.537zm-8.143 7.724c0-1.396-1.14-2.537-2.537-2.537s-2.537 1.141-2.537 2.537 1.14 2.537 2.537 2.537 2.537-1.141 2.537-2.537z"/>
-            </svg>
-            <div class="social-title">Steam</div>
-            <a href="https://steamcommunity.com/id/swetatop" class="social-link" target="_blank">
-                Add Friend
+        <!-- Avatar upload (hidden) -->
+        <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="uploadAvatarForEveryone(this)">
+
+        <!-- Links -->
+        <div class="links">
+            <a href="https://t.me/swetatopp" class="link-item" target="_blank">
+                <div class="link-icon telegram">T</div>
+                <div class="link-content">
+                    <div class="link-title">Telegram</div>
+                    <div class="link-subtitle">Message</div>
+                </div>
+            </a>
+
+            <a href="https://www.instagram.com/swetalub" class="link-item" target="_blank">
+                <div class="link-icon instagram">I</div>
+                <div class="link-content">
+                    <div class="link-title">Instagram</div>
+                    <div class="link-subtitle">Follow</div>
+                </div>
+            </a>
+
+            <a href="https://www.tiktok.com/@swetatop28" class="link-item" target="_blank">
+                <div class="link-icon tiktok">T</div>
+                <div class="link-content">
+                    <div class="link-title">TikTok</div>
+                    <div class="link-subtitle">Watch</div>
+                </div>
+            </a>
+
+            <a href="https://steamcommunity.com/id/swetatop" class="link-item" target="_blank">
+                <div class="link-icon steam">S</div>
+                <div class="link-content">
+                    <div class="link-title">Steam</div>
+                    <div class="link-subtitle">Add Friend</div>
+                </div>
+            </a>
+
+            <!-- New Discord link -->
+            <a href="https://discord.com/users/808726131020791869" class="link-item" target="_blank">
+                <div class="link-icon discord">D</div>
+                <div class="link-content">
+                    <div class="link-title">Discord</div>
+                    <div class="link-subtitle">Join Server</div>
+                </div>
             </a>
         </div>
     </div>
+
+    <!-- Audio player -->
+    <div class="audio-player">
+        <div class="audio-controls">
+            <button class="play-btn" onclick="toggleAudio()">▶</button>
+            <span id="songTitle">Music</span>
+        </div>
+        <audio id="backgroundAudio" loop>
+            <!-- Audio source will be set through settings -->
+        </audio>
+    </div>
+
+    <!-- Settings modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeSettings()">×</button>
+            <h2>Settings</h2>
+            
+            <div class="form-group">
+                <label>Background video/gif URL:</label>
+                <input type="text" id="bgVideoInput" placeholder="https://example.com/background.mp4">
+            </div>
+
+            <div class="form-group">
+                <label>Music URL:</label>
+                <input type="text" id="audioInput" placeholder="https://example.com/music.mp3">
+            </div>
+
+            <div class="form-group">
+                <label>Telegram Icon (URL):</label>
+                <input type="text" id="telegramIcon" placeholder="https://example.com/telegram-icon.png">
+            </div>
+
+            <div class="form-group">
+                <label>Instagram Icon (URL):</label>
+                <input type="text" id="instagramIcon" placeholder="https://example.com/instagram-icon.png">
+            </div>
+
+            <div class="form-group">
+                <label>TikTok Icon (URL):</label>
+                <input type="text" id="tiktokIcon" placeholder="https://example.com/tiktok-icon.png">
+            </div>
+
+            <div class="form-group">
+                <label>Steam Icon (URL):</label>
+                <input type="text" id="steamIcon" placeholder="https://example.com/steam-icon.png">
+            </div>
+
+            <div class="form-group">
+                <label>Discord Icon (URL):</label>
+                <input type="text" id="discordIcon" placeholder="https://example.com/discord-icon.png">
+            </div>
+
+            <button class="btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+    </div>
+
+    <script>
+        // Fixed avatar URL that everyone sees
+        let globalAvatarUrl = "https://via.placeholder.com/120/667eea/ffffff?text=AVATAR";
+        
+        // Admin password (you can change this)
+        const ADMIN_PASSWORD = "admin123";
+
+        // Load global avatar
+        function loadGlobalAvatar() {
+            const savedGlobalAvatar = localStorage.getItem('globalAvatar');
+            if (savedGlobalAvatar) {
+                globalAvatarUrl = savedGlobalAvatar;
+            }
+            document.getElementById('avatarImg').src = globalAvatarUrl;
+        }
+
+        // Show admin access panel
+        function showAdminAccess() {
+            document.getElementById('passwordPanel').style.display = 'block';
+        }
+
+        // Check admin password
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('passwordPanel').style.display = 'none';
+                document.getElementById('adminPassword').value = '';
+            } else {
+                alert('Incorrect password!');
+            }
+        }
+
+        // Show avatar upload for admin
+        function showAvatarUpload() {
+            document.getElementById('avatarInput').click();
+        }
+
+        // Upload avatar for everyone
+        function uploadAvatarForEveryone(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Convert to base64 and store in localStorage
+                    globalAvatarUrl = e.target.result;
+                    localStorage.setItem('globalAvatar', globalAvatarUrl);
+                    
+                    // Update avatar for current user
+                    document.getElementById('avatarImg').src = globalAvatarUrl;
+                    
+                    alert('Avatar updated for all users!');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Reset to default avatar
+        function resetToDefaultAvatar() {
+            globalAvatarUrl = "https://via.placeholder.com/120/667eea/ffffff?text=AVATAR";
+            localStorage.setItem('globalAvatar', globalAvatarUrl);
+            document.getElementById('avatarImg').src = globalAvatarUrl;
+            alert('Avatar reset to default!');
+        }
+
+        // Load saved settings
+        function loadSettings() {
+            const savedBg = localStorage.getItem('backgroundVideo');
+            const savedAudio = localStorage.getItem('backgroundAudio');
+            
+            if (savedBg) {
+                document.getElementById('backgroundVideo').src = savedBg;
+                document.getElementById('bgVideoInput').value = savedBg;
+            }
+            
+            if (savedAudio) {
+                document.getElementById('backgroundAudio').src = savedAudio;
+                document.getElementById('audioInput').value = savedAudio;
+            }
+
+            // Load global avatar
+            loadGlobalAvatar();
+
+            // Load icons
+            loadIcons();
+        }
+
+        // Load custom icons
+        function loadIcons() {
+            const platforms = ['telegram', 'instagram', 'tiktok', 'steam', 'discord'];
+            platforms.forEach(platform => {
+                const savedIcon = localStorage.getItem(`${platform}Icon`);
+                if (savedIcon) {
+                    const iconElement = document.querySelector(`.${platform}`);
+                    if (iconElement) {
+                        iconElement.innerHTML = `<img src="${savedIcon}" alt="${platform}" style="width: 24px; height: 24px;">`;
+                        document.getElementById(`${platform}Icon`).value = savedIcon;
+                    }
+                }
+            });
+        }
+
+        // Audio control
+        function toggleAudio() {
+            const audio = document.getElementById('backgroundAudio');
+            const playBtn = document.querySelector('.play-btn');
+            
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '⏸';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+            }
+        }
+
+        // Open/close settings
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        // Save settings
+        function saveSettings() {
+            const bgVideo = document.getElementById('bgVideoInput').value;
+            const audio = document.getElementById('audioInput').value;
+            
+            if (bgVideo) {
+                document.getElementById('backgroundVideo').src = bgVideo;
+                localStorage.setItem('backgroundVideo', bgVideo);
+            }
+            
+            if (audio) {
+                document.getElementById('backgroundAudio').src = audio;
+                localStorage.setItem('backgroundAudio', audio);
+            }
+
+            // Save icons
+            const platforms = ['telegram', 'instagram', 'tiktok', 'steam', 'discord'];
+            platforms.forEach(platform => {
+                const iconUrl = document.getElementById(`${platform}Icon`).value;
+                if (iconUrl) {
+                    localStorage.setItem(`${platform}Icon`, iconUrl);
+                }
+            });
+
+            loadIcons();
+            closeSettings();
+            alert('Settings saved!');
+        }
+
+        // Load settings on start
+        window.onload = loadSettings;
+    </script>
 </body>
 </html>
